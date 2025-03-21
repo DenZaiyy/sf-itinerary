@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location - Add{% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{{ path('itinerary_index') }}" class="block w-max hover:underline">Retour</a>
+        <h1 class="text-2xl font-bold">Add new location</h1>
+
+        {{ form_start(form, { 'attr': {'class': 'flex flex-col gap-2 p-4 border border-gray-500 rounded-lg'}}) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.latitude) }}
+            {{ form_row(form.longitude) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

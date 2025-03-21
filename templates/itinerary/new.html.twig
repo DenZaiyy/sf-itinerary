@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new itinerary{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col gap-2 max-w-3xl mx-auto">
+        <a href="{{ path('itinerary_index') }}" class="block w-max hover:underline">Retour</a>
+        <h1 class="text-2xl font-bold">Add new itinerary</h1>
+
+        {{ form_start(form, { 'attr': {'class': 'flex flex-col gap-2 p-4 border border-gray-500 rounded-lg'}}) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
