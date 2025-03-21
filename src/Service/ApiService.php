@@ -60,11 +60,29 @@ class ApiService {
         return $data;
     }
 
-    public function getLocations(): array
+    public function createItinerary(array $data): array
     {
         try {
-            $response = $this->client->request('GET', $this->nextApiUrl . '/api/locations', [
-                'headers' => $this->getHeaders()
+            $response = $this->client->request('POST', $this->nextApiUrl . "/api/itineraries", [
+                'headers' => $this->getHeaders(),
+                'json' => $data,
+            ]);
+
+            $data = $response->toArray();
+        } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+            $data = [];
+        }
+
+        return $data;
+    }
+
+    public function createLocation(array $data): array
+    {
+        try {
+            $response = $this->client->request('POST', $this->nextApiUrl . '/api/locations', [
+                'headers' => $this->getHeaders(),
+                'json' => $data,
             ]);
 
             $data = $response->toArray();
