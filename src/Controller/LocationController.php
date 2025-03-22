@@ -20,18 +20,15 @@ final class LocationController extends AbstractController
     public function new(Request $request): Response
     {
         $form = $this->createForm(LocationType::class);
-
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'Location created successfully');
             $data = $form->getData();
-            //dd($data);
 
             if($this->apiService->createLocation($data)) {
                 return $this->redirectToRoute('itinerary_index');
             }
-
-            dd($data);
         }
 
         return $this->render('location/new.html.twig', [
@@ -48,7 +45,7 @@ final class LocationController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'Location added to itinerary successfully');
             $data = $form->getData();
-            dd($data);
+            //dd($data);
 
             if($this->apiService->addToItinerary($data)) {
                 return $this->redirectToRoute('location');

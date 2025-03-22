@@ -93,4 +93,22 @@ class ApiService {
 
         return $data;
     }
+
+    public function addToItinerary(array $data): array
+    {
+        try {
+            $response = $this->client->request('POST', $this->nextApiUrl . '/api/location', [
+                'headers' => $this->getHeaders(),
+                'json' => $data
+            ]);
+
+            $data = $response->toArray();
+        } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+            $data = [];
+        }
+
+        return $data;
+
+    }
 }
