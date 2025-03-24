@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -71,9 +72,9 @@ class LocationType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Create Location',
+                'label' => 'Create',
                 'attr' => [
-                    'class' => 'p-2 bg-blue-500 text-white rounded-md w-full'
+                    'class' => "p-2 bg-blue-500 text-white rounded-md w-full"
                 ]
             ])
         ;
