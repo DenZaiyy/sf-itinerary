@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\HttpClient\CachingHttpClient;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -44,6 +45,25 @@ class ApiService {
         return $data;
     }
 
+    public function createItinerary(array $data): array
+    {
+        try {
+
+            //dd($data);
+            $response = $this->client->request('POST', $this->nextApiUrl . "/api/itineraries", [
+                'headers' => $this->getHeaders(),
+                'json' => $data,
+            ]);
+
+            $data = $response->toArray();
+        } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+            $data = [];
+        }
+
+        return $data;
+    }
+
     public function getItinerary(string $id): array
     {
         try {
@@ -60,10 +80,10 @@ class ApiService {
         return $data;
     }
 
-    public function createItinerary(array $data): array
+    public function updateItinerary(string $id, array $data): array
     {
         try {
-            $response = $this->client->request('POST', $this->nextApiUrl . "/api/itineraries", [
+            $response = $this->client->request('PUT', $this->nextApiUrl . "/api/itineraries/" . $id, [
                 'headers' => $this->getHeaders(),
                 'json' => $data,
             ]);
@@ -77,6 +97,22 @@ class ApiService {
         return $data;
     }
 
+    public function deleteItinerary(string $id): void
+    {
+        try {
+            $response = $this->client->request('DELETE', $this->nextApiUrl . "/api/itineraries/" . $id, [
+                'headers' => $this->getHeaders(),
+            ]);
+
+            if ($response->getStatusCode() !== 200) {
+                throw new NotFoundHttpException();
+            }
+
+        } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function createLocation(array $data): array
     {
         try {
@@ -87,6 +123,22 @@ class ApiService {
 
             $data = $response->toArray();
         } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+            $data = [];
+        }
+
+        return $data;
+    }
+
+    public function getLocations(): array
+    {
+        try {
+            $response = $this->client->request('GET', $this->nextApiUrl . '/api/locations', [
+                'headers' => $this->getHeaders(),
+            ]);
+
+            $data = $response->toArray();
+        } catch(TransportExceptionInterface $e) {
             echo $e->getMessage();
             $data = [];
         }
