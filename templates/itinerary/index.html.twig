@@ -14,10 +14,20 @@
 
         <div class="flex flex-col gap-2">
             {% for index, itinerary in itineraries %}
-                <a href="{{ path('itinerary_show', {id: itinerary.id}) }}" class="block p-4 bg-white shadow rounded-md">
-                    <h2 class="font-bold text-xl capitalize">{{ index + 1 }} - {{ itinerary.title }}</h2>
-                    <p>{{ itinerary.description }}</p>
-                </a>
+                <div class="relative">
+                    <a href="{{ path('itinerary_show', {id: itinerary.id}) }}" class="block p-4 bg-white shadow rounded-md">
+                        <h2 class="font-bold text-xl capitalize">{{ index + 1 }} - {{ itinerary.title }}</h2>
+                        <p>{{ itinerary.description }}</p>
+                    </a>
+                    <div class="absolute top-2 right-2 ">
+                        <form action="{{ path('itinerary_delete', {'id': itinerary.id }) }}" method="post" class="z-10">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="cursor-pointer text-red-500" onclick="return confirm('Êtes-vous sur de vouloir supprimer cet itinéraire?')">
+                                {{ ux_icon('lucide:trash-2', {height: "20px", width: "20px", 'aria-label': "Delete itinerary" }) }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>

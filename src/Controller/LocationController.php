@@ -35,27 +35,4 @@ final class LocationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-    #[Route('/location/add/{id}', name: 'location_new_itinerary', methods: ['GET'])]
-    public function addToItinerary(Request $request): Response
-    {
-        $form = $this->createForm(LocationType::class);
-
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Location added to itinerary successfully');
-            $data = $form->getData();
-            //dd($data);
-
-            if($this->apiService->addToItinerary($data)) {
-                return $this->redirectToRoute('location');
-            }
-
-            dd($data);
-        }
-
-        return $this->render('location/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
 }

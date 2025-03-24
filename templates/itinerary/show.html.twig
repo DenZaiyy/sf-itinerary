@@ -10,10 +10,6 @@
                 <h1 class="text-2xl font-bold capitalize">{{ itinerary.title }}</h1>
                 <p>{{ itinerary.description }}</p>
             </div>
-
-            <div>
-                <a href="{{ path('location_new_itinerary', { id: itinerary.id }) }}" class="block bg-blue-500 text-white px-4 py-2 rounded-md">Add location</a>
-            </div>
         </div>
 
         <div class="flex flex-col lg:flex-row gap-2 w-full">
@@ -40,7 +36,7 @@
         var map = L.map('map')
 
         L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-            maxZoom: 16,
+            maxZoom: 18,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
         }).addTo(map);
 
@@ -70,7 +66,7 @@
         function clickMarker(index) {
             if (markers[index]) {
                 markers[index].fire('click');
-                map.setView(markers[index].getLatLng(), 15);
+                map.setView(markers[index].getLatLng(), 16);
             }
         }
 

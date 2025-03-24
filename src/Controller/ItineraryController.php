@@ -33,7 +33,19 @@ final class ItineraryController extends AbstractController
     #[Route('/itinerary/add', name: 'itinerary_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $form = $this->createForm(ItineraryType::class);
+        $locations = $this->apiService->getLocations();
+
+        $locationsChoices = [];
+
+        foreach ($locations as $location) {
+            $locationsChoices[$location['name']] = $location['id'];
+        }
+
+        //dd($locationsChoices);
+        $form = $this->createForm(ItineraryType::class, null, [
+            'locations_choices' => $locationsChoices
+        ]);
+
 
         $form->handleRequest($request);
 
@@ -49,5 +61,13 @@ final class ItineraryController extends AbstractController
         return $this->render('itinerary/new.html.twig', [
             "form" => $form->createView()
         ]);
+    }
+
+    #[Route('/itinerary/{id}/delete', name: 'itinerary_delete', methods: ['DELETE'])]
+    public function delete(string $id): Response
+    {
+        $this->apiService->deleteItinerary($id);
+        $this->addFlash('success', 'Itinerary deleted successfully');
+        return $this->redirectToRoute('itinerary_index');
     }
 }
