@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.flash-success {
+    @apply bg-green-600 text-white px-4 py-2 rounded-lg;
+}
+
+.flash-danger {
+    @apply bg-red-600 text-white px-4 py-2 rounded-lg;
+}
+
+.flash-notice {
+    @apply bg-yellow-600 text-white px-4 py-2 rounded-lg;
+}
