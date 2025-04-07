@@ -7,11 +7,6 @@ export default class extends Controller {
     static selectCity = document.createElement('select')
 
     connect() {
-        console.log("Stimulus connecté ✅");
-        console.log("Address target :", this.addressTarget);
-        console.log("Latitude target :", this.latitudeTarget);
-        console.log("Longitude target :", this.longitudeTarget);
-        console.log('Select : ', this.constructor.selectCity)
         const select = this.constructor.selectCity
         select.id = "selectCity"
 
@@ -56,7 +51,6 @@ export default class extends Controller {
             })
 
             const data = await response.json();
-            console.log('Data: ', data)
 
             const select = document.getElementById("selectCity")
             select.innerHTML = ""
@@ -64,7 +58,6 @@ export default class extends Controller {
 
             if(data.length >= 0) {
                 for (const loc in data) {
-                    console.log('loc', loc)
                     const option = document.createElement('option')
                     option.value = loc
                     option.innerText = data[loc]["display_name"]
@@ -79,8 +72,6 @@ export default class extends Controller {
                 this.latitudeTarget.value = lat;
                 this.longitudeTarget.value = lon;
 
-                console.log('Coords updated: ', location.lat, location.lon)
-
                 select.addEventListener('change', (e) => {
                     const dataValue = select.value
                     const location = data[dataValue];
@@ -89,8 +80,6 @@ export default class extends Controller {
 
                     this.latitudeTarget.value = lat;
                     this.longitudeTarget.value = lon;
-
-                    console.log('Coords updated: ', location.lat, location.lon)
                 })
             } else {
                 console.warn('Aucune coordonnée trouvée pour cette adresse.')
