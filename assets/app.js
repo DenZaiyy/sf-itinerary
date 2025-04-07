@@ -18,7 +18,7 @@ if(itinerary) {
 const container = document.getElementById("sort-container")
 
 if(container) {
-    const sortable = Sortable.create(container, {
+    Sortable.create(container, {
         sort: true,
         animation: 150,
         draggable: ".location",
@@ -29,12 +29,11 @@ if(container) {
 
 
         // Element dragging ended
-        onEnd: function (/**Event*/evt) {
+        onEnd: function () {
             updatePositions()
             savePositions()
         },
-    })
-
+    });
     function updatePositions() {
         // Mettre à jour les attributs data-position de chaque élément
         Array.from(document.querySelectorAll('#sort-container a')).forEach((item, index) => {
