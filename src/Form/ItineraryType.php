@@ -43,7 +43,8 @@ class ItineraryType extends AbstractType
                     'attr' => [
                         'class' => 'p-2 border border-gray-300 rounded-md w-full'
                     ],
-                    'locations_choices' => $options['locations_choices']
+                    'locations_choices' => $options['locations_choices'],
+                    'label' => false,
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -54,6 +55,11 @@ class ItineraryType extends AbstractType
                 'help_attr' => [
                     'class' => 'text-sm text-gray-500'
                 ],
+                'attr' => [
+                    'data-controller' => 'form-collection',
+                    'data-form-collection-add-label-value' => 'Ajouter une location',
+                    'data-form-collection-delete-label-value' => 'Supprimer la location',
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Create Itinerary',

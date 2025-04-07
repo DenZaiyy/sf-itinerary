@@ -46,7 +46,6 @@ final class ItineraryController extends AbstractController
             'locations_choices' => $locationsChoices
         ]);
 
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
@@ -54,18 +53,23 @@ final class ItineraryController extends AbstractController
             $data = $form->getData();
 
             if($this->apiService->createItinerary($data)) {
+                $this->addFlash('success', 'Itinerary added successfully');
                 return $this->redirectToRoute('itinerary_index');
             }
         }
 
         return $this->render('itinerary/new.html.twig', [
-            "form" => $form->createView()
+            "form" => $form->createView(),
         ]);
     }
 
     #[Route('/itinerary/{id}/delete', name: 'itinerary_delete', methods: ['DELETE'])]
     public function delete(string $id): Response
     {
+        if(!$id) {
+            $this->addFlash('error', 'Itinerary id not found');
+            return $this->redirectToRoute('itinerary_index');
+        }
         $this->apiService->deleteItinerary($id);
         $this->addFlash('success', 'Itinerary deleted successfully');
         return $this->redirectToRoute('itinerary_index');
