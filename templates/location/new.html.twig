@@ -12,7 +12,14 @@
             {{ form_row(form.description) }}
             {{ form_row(form.latitude) }}
             {{ form_row(form.longitude) }}
-            {{ form_row(form.address) }}
+            <div id="address-field" class="flex flex-col gap-2">
+                <div>
+                    {{ form_label(form.address) }}
+                    {{ form_widget(form.address) }}
+                    {{ form_help(form.address) }}
+                </div>
+
+            </div>
             {{ form_row(form.submit) }}
         {{ form_end(form) }}
     </div>
