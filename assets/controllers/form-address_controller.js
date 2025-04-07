@@ -1,5 +1,4 @@
 import {Controller} from '@hotwired/stimulus';
-import {forEach} from "core-js/stable/dom-collections";
 
 export default class extends Controller {
     static targets = ['address', 'latitude', 'longitude']
@@ -25,7 +24,7 @@ export default class extends Controller {
         }
     }
 
-    typing(event) {
+    typing() {
         this.showSelect()
         const address = this.addressTarget.value;
 
@@ -73,6 +72,7 @@ export default class extends Controller {
                 this.longitudeTarget.value = lon;
 
                 select.addEventListener('change', (e) => {
+                    e.preventDefault()
                     const dataValue = select.value
                     const location = data[dataValue];
                     const lat = location.lat
