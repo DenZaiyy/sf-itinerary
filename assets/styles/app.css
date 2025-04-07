@@ -11,3 +11,15 @@
 .flash-notice {
     @apply bg-yellow-600 text-white px-4 py-2 rounded-lg;
 }
+
+.sortable-ghost {
+    @apply bg-blue-400;
+}
+
+.sortable-chosen {
+    @apply bg-green-400;
+}
+
+.sortable-drag {
+    @apply bg-yellow-400;
+}

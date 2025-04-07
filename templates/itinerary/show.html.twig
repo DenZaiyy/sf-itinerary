@@ -3,7 +3,7 @@
 {% block title %}Itinenary {{ itinerary.title }}{% endblock %}
 
 {% block body %}
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4" data-itinerary-id="{{ itinerary.id }}" id="itinerary">
         <div class="flex justify-between items-center mb-4 w-full">
             <div>
                 <a href="{{ path('itinerary_index') }}" class="block w-max hover:underline">Retour</a>
@@ -13,16 +13,26 @@
         </div>
 
         <div class="flex flex-col lg:flex-row gap-2 w-full">
-            <div class="lg:w-1/3 flex flex-col gap-2 overflow-auto max-h-[600px]">
+            <div class="lg:w-1/3 flex flex-col gap-2 overflow-auto max-h-[600px]" id="sort-container">
                 {% for location in itinerary.LocationItinerary %}
                     <a onclick="clickMarker({{ loop.index0 }})"
-                       class="flex gap-2 p-2 bg-white shadow rounded-md items-center cursor-pointer">
-                        <div class="py-2 px-4 {{ location.mustToSee ? 'bg-orange-500' : 'bg-green-600' }} text-white rounded-full text-center">
+                       class="location flex gap-2 p-2 bg-white shadow rounded-md items-center cursor-pointer relative"
+                       data-id="{{ location.id }}"
+                    >
+                        <div class="order py-2 px-4 {{ location.mustToSee ? 'bg-orange-500' : 'bg-green-600' }} text-white rounded-full text-center" data-order="{{ location.order }}">
                             {{ location.order }}
                         </div>
                         <div>
                             <h2 class="font-bold text-xl capitalize">{{ location.location.name }}</h2>
                             <p class="text-sm text-gray-400">{{ location.location.description }}</p>
+                        </div>
+                        <div class="absolute top-2 right-2 ">
+                            <form action="{{ path('location_delete', {'id': location.id, 'itineraryId': itinerary.id}) }}" method="post" class="z-10">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="cursor-pointer text-red-500" onclick="return confirm('Êtes-vous sur de vouloir supprimer cet itinéraire?')">
+                                    {{ ux_icon('lucide:trash-2', {height: "20px", width: "20px", 'aria-label': "Delete itinerary" }) }}
+                                </button>
+                            </form>
                         </div>
                     </a>
                 {% endfor %}

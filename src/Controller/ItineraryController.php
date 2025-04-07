@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ItineraryType;
 use App\Service\ApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,7 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ItineraryController extends AbstractController
 {
 
-    public function __construct(private readonly ApiService $apiService) {}
+    public function __construct(private readonly ApiService $apiService)
+    {
+    }
 
     #[Route('/', name: 'itinerary_index', methods: ['GET'])]
     public function index(): Response
@@ -48,11 +51,11 @@ final class ItineraryController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'Itinerary created successfully');
             $data = $form->getData();
 
-            if($this->apiService->createItinerary($data)) {
+            if ($this->apiService->createItinerary($data)) {
                 $this->addFlash('success', 'Itinerary added successfully');
                 return $this->redirectToRoute('itinerary_index');
             }
@@ -66,12 +69,34 @@ final class ItineraryController extends AbstractController
     #[Route('/itinerary/{id}/delete', name: 'itinerary_delete', methods: ['DELETE'])]
     public function delete(string $id): Response
     {
-        if(!$id) {
+        if (!$id) {
             $this->addFlash('error', 'Itinerary id not found');
             return $this->redirectToRoute('itinerary_index');
         }
         $this->apiService->deleteItinerary($id);
         $this->addFlash('success', 'Itinerary deleted successfully');
         return $this->redirectToRoute('itinerary_index');
+    }
+
+    #[Route('/itinerary/{id}/update', name: 'itinerary_update', methods: ['PUT', 'POST'])]
+    public function update(Request $request, string $id): Response
+    {
+        if (!$id) {
+            return new JsonResponse(['error' => 'Itinerary id not found'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+            $result = $this->apiService->updateItinerary($id, $data);
+
+            if($result) {
+                return new JsonResponse(['success' => true, 'message' => 'Itinerary updated successfully']);
+            }
+
+            return new JsonResponse(['error' => 'Itinerary update failed'], Response::HTTP_BAD_REQUEST);
+        } catch (\JsonException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
