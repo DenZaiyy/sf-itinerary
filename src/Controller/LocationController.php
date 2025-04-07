@@ -27,6 +27,7 @@ final class LocationController extends AbstractController
             $data = $form->getData();
 
             if($this->apiService->createLocation($data)) {
+                $this->addFlash('success', 'Location created successfully');
                 return $this->redirectToRoute('itinerary_index');
             }
         }

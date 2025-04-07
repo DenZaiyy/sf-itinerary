@@ -3,8 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,7 +37,7 @@ class LocationType extends AbstractType
                     'class' => 'p-2 border border-gray-300 rounded-md w-full'
                 ]
             ])
-            ->add('latitude', NumberType::class, [
+            ->add('latitude', HiddenType::class, [
                 'label' => 'Latitude',
                 'required' => true,
                 'help' => 'Please enter a latitude',
@@ -46,10 +45,11 @@ class LocationType extends AbstractType
                     'class' => 'text-sm text-gray-500'
                 ],
                 'attr' => [
-                    'class' => 'p-2 border border-gray-300 rounded-md w-full'
+                    'class' => 'p-2 border border-gray-300 rounded-md w-full',
+                    'data-form-address-target' => 'latitude', // Défini l'élement à target depuis le controller
                 ]
             ])
-            ->add('longitude', NumberType::class, [
+            ->add('longitude', HiddenType::class, [
                 'label' => 'Longitude',
                 'required' => true,
                 'help' => 'Please enter a longitude',
@@ -57,7 +57,8 @@ class LocationType extends AbstractType
                     'class' => 'text-sm text-gray-500'
                 ],
                 'attr' => [
-                    'class' => 'p-2 border border-gray-300 rounded-md w-full'
+                    'class' => 'p-2 border border-gray-300 rounded-md w-full',
+                    'data-form-address-target' => 'longitude', // Défini l'élement à target depuis le controller
                 ]
             ])
             ->add('address', TextType::class, [
@@ -68,7 +69,9 @@ class LocationType extends AbstractType
                     'class' => 'text-sm text-gray-500'
                 ],
                 'attr' => [
-                    'class' => 'p-2 border border-gray-300 rounded-md w-full'
+                    'class' => 'p-2 border border-gray-300 rounded-md w-full',
+                    'data-form-address-target' => 'address', // Défini l'élement à target depuis le controller
+                    'data-action' => 'input->form-address#typing' // Permet de déclencher l'action typing du controller quand on écris
                 ]
             ])
             ->add('submit', SubmitType::class, [
