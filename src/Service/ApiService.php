@@ -146,6 +146,22 @@ class ApiService {
         return $data;
     }
 
+    public function deleteLocationFromItinerary(string $itineraryId, string $locationId): void
+    {
+        try {
+            $response = $this->client->request('DELETE', $this->nextApiUrl . "/api/itineraries/" . $itineraryId . "/" . $locationId, [
+                'headers' => $this->getHeaders(),
+            ]);
+
+            if ($response->getStatusCode() !== 200) {
+                throw new NotFoundHttpException();
+            }
+        } catch (TransportExceptionInterface $e) {
+            echo $e->getMessage();
+        }
+
+    }
+
     public function addToItinerary(array $data): array
     {
         try {
